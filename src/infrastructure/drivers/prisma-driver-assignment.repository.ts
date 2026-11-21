@@ -1,4 +1,3 @@
-
 import { prisma } from "@/infrastructure/db/prisma";
 
 import type {
@@ -27,9 +26,7 @@ function toAssignmentRecord(record: {
   };
 }
 
-export class PrismaDriverAssignmentRepository
-  implements DriverAssignmentRepository
-{
+export class PrismaDriverAssignmentRepository implements DriverAssignmentRepository {
   async findDriverById(driverId: string) {
     return prisma.user.findUnique({
       where: { id: driverId },
@@ -66,9 +63,7 @@ export class PrismaDriverAssignmentRepository
     return assignment ? toAssignmentRecord(assignment) : null;
   }
 
-  async createAssignment(
-    assignment: DriverAssignment,
-  ): Promise<DriverAssignmentRecord> {
+  async createAssignment(assignment: DriverAssignment): Promise<DriverAssignmentRecord> {
     const created = await prisma.vesselDriver.create({
       data: {
         driverId: assignment.driverId,
@@ -81,9 +76,7 @@ export class PrismaDriverAssignmentRepository
     return toAssignmentRecord(created);
   }
 
-  async findAssignmentById(
-    assignmentId: string,
-  ): Promise<DriverAssignmentRecord | null> {
+  async findAssignmentById(assignmentId: string): Promise<DriverAssignmentRecord | null> {
     const assignment = await prisma.vesselDriver.findUnique({
       where: { id: assignmentId },
     });
@@ -103,9 +96,7 @@ export class PrismaDriverAssignmentRepository
     return toAssignmentRecord(updated);
   }
 
-  async listByVessel(
-    vesselId: string,
-  ): Promise<DriverAssignmentRecord[]> {
+  async listByVessel(vesselId: string): Promise<DriverAssignmentRecord[]> {
     const assignments = await prisma.vesselDriver.findMany({
       where: { vesselId },
       orderBy: { assignedAt: "desc" },

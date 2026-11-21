@@ -1,4 +1,3 @@
-
 import { describe, expect, it } from "vitest";
 
 import {
@@ -12,11 +11,7 @@ describe("driver assignment", () => {
   const assignedAt = new Date("2026-11-21T10:00:00");
 
   it("crea una asignación activa", () => {
-    const assignment = createDriverAssignment(
-      "driver-1",
-      "vessel-1",
-      assignedAt,
-    );
+    const assignment = createDriverAssignment("driver-1", "vessel-1", assignedAt);
 
     expect(assignment.driverId).toBe("driver-1");
     expect(assignment.vesselId).toBe("vessel-1");
@@ -25,13 +20,11 @@ describe("driver assignment", () => {
   });
 
   it("rechaza una asignación duplicada", () => {
-    const assignments = [
-      createDriverAssignment("driver-1", "vessel-1", assignedAt),
-    ];
+    const assignments = [createDriverAssignment("driver-1", "vessel-1", assignedAt)];
 
-    expect(() =>
-      ensureCanAssignDriver(assignments, "driver-1", "vessel-1"),
-    ).toThrow("El chofer ya está asignado");
+    expect(() => ensureCanAssignDriver(assignments, "driver-1", "vessel-1")).toThrow(
+      "El chofer ya está asignado",
+    );
   });
 
   it("permite asignar nuevamente después de retirar al chofer", () => {
@@ -40,21 +33,11 @@ describe("driver assignment", () => {
       new Date("2026-11-21T12:00:00"),
     );
 
-    expect(() =>
-      ensureCanAssignDriver(
-        [previousAssignment],
-        "driver-1",
-        "vessel-1",
-      ),
-    ).not.toThrow();
+    expect(() => ensureCanAssignDriver([previousAssignment], "driver-1", "vessel-1")).not.toThrow();
   });
 
   it("registra la fecha de retiro", () => {
-    const assignment = createDriverAssignment(
-      "driver-1",
-      "vessel-1",
-      assignedAt,
-    );
+    const assignment = createDriverAssignment("driver-1", "vessel-1", assignedAt);
 
     const unassignedAt = new Date("2026-11-21T12:00:00");
 
@@ -70,9 +53,7 @@ describe("driver assignment", () => {
       new Date("2026-11-21T12:00:00"),
     );
 
-    expect(() => unassignDriver(assignment)).toThrow(
-      "Esta asignación ya fue retirada",
-    );
+    expect(() => unassignDriver(assignment)).toThrow("Esta asignación ya fue retirada");
   });
 
   it("permite iniciar un viaje si no hay otro en tránsito", () => {

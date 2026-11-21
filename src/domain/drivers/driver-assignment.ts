@@ -1,4 +1,3 @@
-
 import { DomainError } from "../shared/domain-error";
 
 export interface DriverAssignment {
@@ -56,10 +55,7 @@ export function unassignDriver(
   unassignedAt: Date = new Date(),
 ): DriverAssignment {
   if (assignment.unassignedAt !== null) {
-    throw new DomainError(
-      "DRIVER_ASSIGNMENT_INACTIVE",
-      "Esta asignación ya fue retirada.",
-    );
+    throw new DomainError("DRIVER_ASSIGNMENT_INACTIVE", "Esta asignación ya fue retirada.");
   }
 
   return {

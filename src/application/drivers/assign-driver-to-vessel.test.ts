@@ -1,18 +1,10 @@
-
 import { describe, expect, it, vi } from "vitest";
 
+import { createAssignDriverToVessel } from "./assign-driver-to-vessel";
 
-import {
-  createAssignDriverToVessel,
-} from "./assign-driver-to-vessel";
+import type { DriverAssignment } from "@/domain/drivers/driver-assignment";
 
-import type {
-  DriverAssignment,
-} from "@/domain/drivers/driver-assignment";
-
-import type {
-  DriverAssignmentRepository,
-} from "./ports";
+import type { DriverAssignmentRepository } from "./ports";
 
 describe("assign driver to vessel", () => {
   const assignedAt = new Date("2026-11-21T10:00:00");
@@ -52,10 +44,7 @@ describe("assign driver to vessel", () => {
   it("asigna correctamente un chofer a una embarcación", async () => {
     const repository = createRepository();
 
-    const execute = createAssignDriverToVessel(
-      repository,
-      clock,
-    );
+    const execute = createAssignDriverToVessel(repository, clock);
 
     const result = await execute({
       driverId: "driver-1",

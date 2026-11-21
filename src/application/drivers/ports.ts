@@ -1,4 +1,3 @@
-
 import type { DriverAssignment } from "../../domain/drivers/driver-assignment";
 
 /**
@@ -37,25 +36,13 @@ export interface DriverAssignmentRepository {
 
   findVesselById(vesselId: string): Promise<VesselRecord | null>;
 
-  findActiveAssignment(
-    driverId: string,
-    vesselId: string,
-  ): Promise<DriverAssignmentRecord | null>;
+  findActiveAssignment(driverId: string, vesselId: string): Promise<DriverAssignmentRecord | null>;
 
-  createAssignment(
-    assignment: DriverAssignment,
-  ): Promise<DriverAssignmentRecord>;
+  createAssignment(assignment: DriverAssignment): Promise<DriverAssignmentRecord>;
 
-  findAssignmentById(
-    assignmentId: string,
-  ): Promise<DriverAssignmentRecord | null>;
+  findAssignmentById(assignmentId: string): Promise<DriverAssignmentRecord | null>;
 
-  updateUnassignedAt(
-    assignmentId: string,
-    unassignedAt: Date,
-  ): Promise<DriverAssignmentRecord>;
+  updateUnassignedAt(assignmentId: string, unassignedAt: Date): Promise<DriverAssignmentRecord>;
 
-  listByVessel(
-    vesselId: string,
-  ): Promise<DriverAssignmentRecord[]>;
+  listByVessel(vesselId: string): Promise<DriverAssignmentRecord[]>;
 }
