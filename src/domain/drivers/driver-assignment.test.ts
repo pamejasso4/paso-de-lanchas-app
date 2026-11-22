@@ -48,15 +48,15 @@ describe("driver assignment", () => {
   });
 
   it("rechaza retirar una asignación que ya fue retirada", () => {
-  const assignment = unassignDriver(
-    createDriverAssignment("driver-1", "vessel-1", assignedAt),
-    new Date("2026-11-21T12:00:00"),
-  );
+    const assignment = unassignDriver(
+      createDriverAssignment("driver-1", "vessel-1", assignedAt),
+      new Date("2026-11-21T12:00:00"),
+    );
 
-  expect(() =>
-    unassignDriver(assignment, new Date("2026-11-22T12:00:00.000Z")),
-  ).toThrow("Esta asignación ya fue retirada");
-});
+    expect(() => unassignDriver(assignment, new Date("2026-11-22T12:00:00.000Z"))).toThrow(
+      "Esta asignación ya fue retirada",
+    );
+  });
 
   it("permite iniciar un viaje si no hay otro en tránsito", () => {
     expect(canStartTrip(false)).toBe(true);

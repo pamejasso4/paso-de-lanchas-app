@@ -50,10 +50,7 @@ export function createDriverAssignment(
 /**
  * Retira al chofer de la embarcación registrando la fecha de baja.
  */
-export function unassignDriver(
-  assignment: DriverAssignment,
-  unassignedAt: Date,
-): DriverAssignment {
+export function unassignDriver(assignment: DriverAssignment, unassignedAt: Date): DriverAssignment {
   if (assignment.unassignedAt !== null) {
     throw new DomainError("DRIVER_ASSIGNMENT_INACTIVE", "Esta asignación ya fue retirada.");
   }
