@@ -1,4 +1,5 @@
 import type { PrismaClient } from "@/generated/prisma/client";
+import { DomainError } from "@/domain/shared/domain-error";
 import type {
   VesselRecord,
   VesselStatusHistoryEntry,
@@ -40,12 +41,25 @@ export class PrismaVesselStatusRepository implements VesselStatusRepository {
     reason: string;
     changedById: string;
   }): Promise<VesselStatusHistoryEntry> {
-    const [, createdHistory] = await this.prisma.$transaction([
-      this.prisma.vessel.update({
-        where: { id: params.vesselId },
-        data: { status: params.toStatus },
-      }),
-      this.prisma.vesselStatusHistory.create({
+    return this.prisma.$transaction(async (tx) => {
+      const updatedVessel = await tx.vessel.updateMany({
+        where: {
+          id: params.vesselId,
+          status: params.fromStatus,
+        },
+        data: {
+          status: params.toStatus,
+        },
+      });
+
+      if (updatedVessel.count === 0) {
+        throw new DomainError(
+          "VESSEL_STATUS_CONFLICT",
+          "El estado de la embarcación cambió. Recarga la información e inténtalo nuevamente.",
+        );
+      }
+
+      const createdHistory = await tx.vesselStatusHistory.create({
         data: {
           vesselId: params.vesselId,
           fromStatus: params.fromStatus,
@@ -58,19 +72,19 @@ export class PrismaVesselStatusRepository implements VesselStatusRepository {
             select: { fullName: true },
           },
         },
-      }),
-    ]);
+      });
 
-    return {
-      id: createdHistory.id,
-      vesselId: createdHistory.vesselId,
-      fromStatus: createdHistory.fromStatus as VesselStatus,
-      toStatus: createdHistory.toStatus as VesselStatus,
-      reason: createdHistory.reason,
-      changedById: createdHistory.changedById,
-      changedByName: createdHistory.changedBy?.fullName ?? null,
-      changedAt: createdHistory.changedAt,
-    };
+      return {
+        id: createdHistory.id,
+        vesselId: createdHistory.vesselId,
+        fromStatus: createdHistory.fromStatus as VesselStatus,
+        toStatus: createdHistory.toStatus as VesselStatus,
+        reason: createdHistory.reason,
+        changedById: createdHistory.changedById,
+        changedByName: createdHistory.changedBy?.fullName ?? null,
+        changedAt: createdHistory.changedAt,
+      };
+    });
   }
 
   async getStatusHistory(vesselId: string): Promise<VesselStatusHistoryEntry[]> {

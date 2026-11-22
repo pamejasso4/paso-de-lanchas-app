@@ -99,4 +99,28 @@ describe("createChangeVesselStatus", () => {
 
     expect(repo.changeStatusWithHistory).not.toHaveBeenCalled();
   });
+
+  it("rechaza el cambio cuando otro administrador modificó el estado", async () => {
+    const conflictError = new DomainError(
+      "VESSEL_STATUS_CONFLICT",
+      "El estado de la embarcación cambió. Recarga la información e inténtalo nuevamente.",
+    );
+
+    const repo = createMockRepository({
+      changeStatusWithHistory: vi.fn().mockRejectedValue(conflictError),
+    });
+
+    const changeStatus = createChangeVesselStatus(repo);
+
+    await expect(
+      changeStatus({
+        vesselId: "11111111-1111-4111-8111-111111111111",
+        toStatus: "MAINTENANCE",
+        reason: "Revisión de propela",
+        changedById: "33333333-3333-4333-8333-333333333333",
+      }),
+    ).rejects.toThrow(conflictError);
+
+    expect(repo.changeStatusWithHistory).toHaveBeenCalledTimes(1);
+  });
 });

@@ -8,7 +8,7 @@ import type {
 } from "./ports";
 
 export const changeVesselStatusSchema = z.object({
-  vesselId: z.string().trim().min(1, "El identificador de la embarcacion es obligatorio."),
+  vesselId: z.string().trim().min(1, "El identificador de la embarcación es obligatorio."),
   toStatus: z.enum(VESSEL_STATUSES),
   reason: z
     .string()
@@ -20,7 +20,7 @@ export const changeVesselStatusSchema = z.object({
 
 export class VesselNotFoundError extends DomainError {
   constructor(vesselId: string) {
-    super("VESSEL_NOT_FOUND", `No se encontro la embarcacion con id ${vesselId}.`);
+    super("VESSEL_NOT_FOUND", `No se encontró la embarcación con id ${vesselId}.`);
     this.name = "VesselNotFoundError";
   }
 }
@@ -34,7 +34,7 @@ export function createChangeVesselStatus(repo: VesselStatusRepository) {
       const firstIssue = parsed.error.issues[0];
       throw new DomainError(
         "INVALID_VESSEL_STATUS_INPUT",
-        firstIssue?.message ?? "Datos invalidos para cambiar el estado.",
+        firstIssue?.message ?? "Datos inválidos para cambiar el estado.",
       );
     }
 
