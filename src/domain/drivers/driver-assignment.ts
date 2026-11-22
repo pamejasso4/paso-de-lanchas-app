@@ -37,7 +37,7 @@ export function ensureCanAssignDriver(
 export function createDriverAssignment(
   driverId: string,
   vesselId: string,
-  assignedAt: Date = new Date(),
+  assignedAt: Date,
 ): DriverAssignment {
   return {
     driverId,
@@ -52,7 +52,7 @@ export function createDriverAssignment(
  */
 export function unassignDriver(
   assignment: DriverAssignment,
-  unassignedAt: Date = new Date(),
+  unassignedAt: Date,
 ): DriverAssignment {
   if (assignment.unassignedAt !== null) {
     throw new DomainError("DRIVER_ASSIGNMENT_INACTIVE", "Esta asignación ya fue retirada.");
