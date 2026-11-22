@@ -8,7 +8,6 @@ import { VesselForm } from "../vessel-form";
 export const metadata: Metadata = {
   title: "Nueva embarcacion | Administrador",
 };
-export const dynamic = "force-dynamic";
 
 export default async function NuevaEmbarcacionPage() {
   const repo = new PrismaVesselRepository(prisma);

@@ -9,7 +9,6 @@ import { VesselForm } from "../vessel-form";
 export const metadata: Metadata = {
   title: "Editar embarcacion | Administrador",
 };
-export const dynamic = "force-dynamic";
 
 interface EditarEmbarcacionPageProps {
   params: Promise<{ id: string }>;

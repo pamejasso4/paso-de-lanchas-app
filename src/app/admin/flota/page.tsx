@@ -11,7 +11,6 @@ import { prisma } from "@/infrastructure/db/prisma";
 import { PrismaVesselRepository } from "@/infrastructure/fleet/prisma-vessel-repository";
 
 export const metadata: Metadata = { title: "Flota | Administrador" };
-export const dynamic = "force-dynamic";
 
 const KIND_LABELS: Record<VesselKind, string> = {
   BOAT: "Lancha",
