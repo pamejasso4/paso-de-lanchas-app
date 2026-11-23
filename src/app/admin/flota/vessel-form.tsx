@@ -40,7 +40,7 @@ export function VesselForm({ mode, vehicleTypes, initialVessel, action }: Vessel
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="code" className="text-ink mb-1.5 block text-sm font-medium">
-            Codigo *
+            Código *
           </label>
           <input
             id="code"
@@ -56,7 +56,7 @@ export function VesselForm({ mode, vehicleTypes, initialVessel, action }: Vessel
 
         <div>
           <label htmlFor="registration" className="text-ink mb-1.5 block text-sm font-medium">
-            Matricula *
+            Matrícula *
           </label>
           <input
             id="registration"
@@ -72,7 +72,7 @@ export function VesselForm({ mode, vehicleTypes, initialVessel, action }: Vessel
 
         <div className="sm:col-span-2">
           <label htmlFor="name" className="text-ink mb-1.5 block text-sm font-medium">
-            Nombre de la embarcacion *
+            Nombre de la embarcación *
           </label>
           <input
             id="name"
@@ -88,7 +88,7 @@ export function VesselForm({ mode, vehicleTypes, initialVessel, action }: Vessel
 
         <div>
           <label htmlFor="kind" className="text-ink mb-1.5 block text-sm font-medium">
-            Tipo de embarcacion *
+            Tipo de embarcación *
           </label>
           <select
             id="kind"
@@ -136,7 +136,7 @@ export function VesselForm({ mode, vehicleTypes, initialVessel, action }: Vessel
 
         <div>
           <label htmlFor="photoUrl" className="text-ink mb-1.5 block text-sm font-medium">
-            URL de fotografia
+            URL de fotografía (https://)
           </label>
           <input
             id="photoUrl"
@@ -152,12 +152,12 @@ export function VesselForm({ mode, vehicleTypes, initialVessel, action }: Vessel
       {kind === "FERRY" ? (
         <fieldset className="border-line bg-surface/60 space-y-4 rounded-xl border p-4">
           <legend className="text-ink px-2 text-sm font-semibold">
-            Capacidad por tipo de vehiculo (Transbordador)
+            Capacidad por tipo de vehículo (Transbordador)
           </legend>
 
           {vehicleTypes.length === 0 ? (
             <p className="text-ink-muted text-sm">
-              No hay tipos de vehiculo activos registrados en la base de datos.
+              No hay tipos de vehículo activos registrados en la base de datos.
             </p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
@@ -200,7 +200,7 @@ export function VesselForm({ mode, vehicleTypes, initialVessel, action }: Vessel
           {isPending
             ? "Guardando..."
             : mode === "create"
-              ? "Registrar embarcacion"
+              ? "Registrar embarcación"
               : "Guardar cambios"}
         </button>
       </div>

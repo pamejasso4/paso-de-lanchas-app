@@ -33,15 +33,15 @@ export function validateVesselRules(input: ValidateVesselRulesInput): {
   const registration = input.registration.trim().toUpperCase();
 
   if (!code) {
-    throw new DomainError("INVALID_VESSEL_CODE", "El codigo de la embarcacion es obligatorio.");
+    throw new DomainError("INVALID_VESSEL_CODE", "El código de la embarcación es obligatorio.");
   }
   if (!name) {
-    throw new DomainError("INVALID_VESSEL_NAME", "El nombre de la embarcacion es obligatorio.");
+    throw new DomainError("INVALID_VESSEL_NAME", "El nombre de la embarcación es obligatorio.");
   }
   if (!registration) {
     throw new DomainError(
       "INVALID_VESSEL_REGISTRATION",
-      "La matricula de la embarcacion es obligatoria.",
+      "La matrícula de la embarcación es obligatoria.",
     );
   }
   if (!Number.isInteger(input.passengerCapacity) || input.passengerCapacity <= 0) {
@@ -65,13 +65,13 @@ export function validateVesselRules(input: ValidateVesselRulesInput): {
     if (!Number.isInteger(item.capacity) || item.capacity < 0) {
       throw new DomainError(
         "INVALID_VEHICLE_CAPACITY",
-        "La capacidad por tipo de vehiculo debe ser mayor o igual a 0.",
+        "La capacidad por tipo de vehículo debe ser mayor o igual a 0.",
       );
     }
     if (seen.has(item.vehicleTypeId)) {
       throw new DomainError(
         "DUPLICATE_VEHICLE_TYPE_CAPACITY",
-        "No se puede repetir el mismo tipo de vehiculo.",
+        "No se puede repetir el mismo tipo de vehículo.",
       );
     }
     seen.add(item.vehicleTypeId);

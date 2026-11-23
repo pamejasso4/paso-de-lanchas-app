@@ -9,6 +9,7 @@ import {
 import { createListVessels } from "@/application/fleet/list-vessels";
 import { prisma } from "@/infrastructure/db/prisma";
 import { PrismaVesselRepository } from "@/infrastructure/fleet/prisma-vessel-repository";
+import { requireRole } from "@/lib/auth/require-role";
 
 export const metadata: Metadata = { title: "Flota | Administrador" };
 
@@ -36,6 +37,8 @@ interface FlotaPageProps {
 }
 
 export default async function FlotaPage({ searchParams }: FlotaPageProps) {
+  await requireRole("ADMIN", "SUPERADMIN");
+
   const params = await searchParams;
   const kindFilter = VESSEL_KINDS.includes(params.kind as VesselKind)
     ? (params.kind as VesselKind)
@@ -56,7 +59,7 @@ export default async function FlotaPage({ searchParams }: FlotaPageProps) {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <p className="text-ink-muted text-xs font-semibold tracking-wider uppercase">
-            Administracion de flota
+            Administración de flota
           </p>
           <h1 className="font-heading text-ink text-2xl font-bold">
             Embarcaciones ({vessels.length})
@@ -67,7 +70,7 @@ export default async function FlotaPage({ searchParams }: FlotaPageProps) {
           href="/admin/flota/nueva"
           className="bg-brand hover:bg-brand-accent rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition"
         >
-          + Nueva embarcacion
+          + Nueva embarcación
         </Link>
       </div>
 
@@ -136,10 +139,10 @@ export default async function FlotaPage({ searchParams }: FlotaPageProps) {
           <table className="w-full border-collapse text-left text-sm">
             <thead>
               <tr className="border-line bg-surface/70 text-ink-muted border-b text-xs uppercase">
-                <th className="px-4 py-3 font-semibold">Codigo</th>
+                <th className="px-4 py-3 font-semibold">Código</th>
                 <th className="px-4 py-3 font-semibold">Nombre</th>
                 <th className="px-4 py-3 font-semibold">Tipo</th>
-                <th className="px-4 py-3 font-semibold">Matricula</th>
+                <th className="px-4 py-3 font-semibold">Matrícula</th>
                 <th className="px-4 py-3 font-semibold">Capacidad</th>
                 <th className="px-4 py-3 font-semibold">Estado</th>
                 <th className="px-4 py-3 text-right font-semibold">Acciones</th>

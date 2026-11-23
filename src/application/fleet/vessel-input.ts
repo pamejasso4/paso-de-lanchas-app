@@ -5,7 +5,7 @@ export const vehicleCapacitySchema = z.object({
   vehicleTypeId: z.number().int().positive(),
   capacity: z
     .number()
-    .int("La capacidad vehicular debe ser un numero entero.")
+    .int("La capacidad vehicular debe ser un número entero.")
     .min(0, "La capacidad vehicular no puede ser negativa."),
 });
 
@@ -13,8 +13,8 @@ export const vesselFormSchema = z.object({
   code: z
     .string()
     .trim()
-    .min(1, "El codigo es obligatorio.")
-    .max(10, "El codigo no puede exceder 10 caracteres."),
+    .min(1, "El código es obligatorio.")
+    .max(10, "El código no puede exceder 10 caracteres."),
   name: z
     .string()
     .trim()
@@ -24,8 +24,8 @@ export const vesselFormSchema = z.object({
   registration: z
     .string()
     .trim()
-    .min(1, "La matricula es obligatoria.")
-    .max(30, "La matricula no puede exceder 30 caracteres."),
+    .min(1, "La matrícula es obligatoria.")
+    .max(30, "La matrícula no puede exceder 30 caracteres."),
   color: z
     .string()
     .trim()
@@ -35,7 +35,11 @@ export const vesselFormSchema = z.object({
   photoUrl: z
     .string()
     .trim()
-    .url("La URL de la fotografia no es valida.")
+    .url("La URL de la fotografía debe iniciar con https://.")
+    .refine(
+      (value) => value.startsWith("https://"),
+      "La URL de la fotografía debe iniciar con https://.",
+    )
     .optional()
     .nullable()
     .or(z.literal("")),

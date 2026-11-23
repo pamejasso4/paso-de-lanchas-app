@@ -6,8 +6,10 @@ import { DomainError } from "@/domain/shared/domain-error";
 import { VESSEL_KINDS, type VesselKind } from "@/domain/fleet/vessel";
 import { createCreateVessel } from "@/application/fleet/create-vessel";
 import { createUpdateVessel } from "@/application/fleet/update-vessel";
+import { prismaAuditLogger } from "@/infrastructure/audit/prisma-audit-logger";
 import { prisma } from "@/infrastructure/db/prisma";
 import { PrismaVesselRepository } from "@/infrastructure/fleet/prisma-vessel-repository";
+import { assertRole } from "@/lib/auth/require-role";
 
 export interface VesselActionState {
   error: string | null;
@@ -65,19 +67,21 @@ export async function createVesselAction(
   _prevState: VesselActionState,
   formData: FormData,
 ): Promise<VesselActionState> {
+  const user = await assertRole("ADMIN", "SUPERADMIN");
+
   try {
-    // TODO(#7): await requireRole(["ADMIN", "SUPERADMIN"]);
     const repo = new PrismaVesselRepository(prisma);
-    const createVessel = createCreateVessel(repo);
+    const auditLogger = prismaAuditLogger(prisma);
+    const createVessel = createCreateVessel(repo, auditLogger);
     const payload = parseFormPayload(formData);
 
-    await createVessel(payload);
+    await createVessel(payload, user.id);
   } catch (error) {
     if (error instanceof DomainError) {
       return { error: error.message };
     }
     return {
-      error: "Ocurrio un error inesperado al registrar la embarcacion.",
+      error: "Ocurrió un error inesperado al registrar la embarcación.",
     };
   }
 
@@ -90,19 +94,21 @@ export async function updateVesselAction(
   _prevState: VesselActionState,
   formData: FormData,
 ): Promise<VesselActionState> {
+  const user = await assertRole("ADMIN", "SUPERADMIN");
+
   try {
-    // TODO(#7): await requireRole(["ADMIN", "SUPERADMIN"]);
     const repo = new PrismaVesselRepository(prisma);
-    const updateVessel = createUpdateVessel(repo);
+    const auditLogger = prismaAuditLogger(prisma);
+    const updateVessel = createUpdateVessel(repo, auditLogger);
     const payload = parseFormPayload(formData);
 
-    await updateVessel(vesselId, payload);
+    await updateVessel(vesselId, payload, user.id);
   } catch (error) {
     if (error instanceof DomainError) {
       return { error: error.message };
     }
     return {
-      error: "Ocurrio un error inesperado al actualizar la embarcacion.",
+      error: "Ocurrió un error inesperado al actualizar la embarcación.",
     };
   }
 

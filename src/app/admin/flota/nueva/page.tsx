@@ -2,14 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/infrastructure/db/prisma";
 import { PrismaVesselRepository } from "@/infrastructure/fleet/prisma-vessel-repository";
+import { requireRole } from "@/lib/auth/require-role";
 import { createVesselAction } from "../actions";
 import { VesselForm } from "../vessel-form";
 
 export const metadata: Metadata = {
-  title: "Nueva embarcacion | Administrador",
+  title: "Nueva embarcación | Administrador",
 };
 
 export default async function NuevaEmbarcacionPage() {
+  await requireRole("ADMIN", "SUPERADMIN");
+
   const repo = new PrismaVesselRepository(prisma);
   const vehicleTypes = await repo.listVehicleTypes();
 
@@ -18,7 +21,7 @@ export default async function NuevaEmbarcacionPage() {
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-ink-muted text-xs font-semibold tracking-wider uppercase">Flota</p>
-          <h1 className="font-heading text-ink text-2xl font-bold">Registrar embarcacion</h1>
+          <h1 className="font-heading text-ink text-2xl font-bold">Registrar embarcación</h1>
         </div>
 
         <Link href="/admin/flota" className="text-brand text-sm font-medium hover:underline">

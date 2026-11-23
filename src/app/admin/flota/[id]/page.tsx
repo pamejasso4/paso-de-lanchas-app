@@ -1,23 +1,37 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { z } from "zod";
 import { prisma } from "@/infrastructure/db/prisma";
 import { PrismaVesselRepository } from "@/infrastructure/fleet/prisma-vessel-repository";
+import { requireRole } from "@/lib/auth/require-role";
 import { updateVesselAction } from "../actions";
 import { VesselForm } from "../vessel-form";
 
 export const metadata: Metadata = {
-  title: "Editar embarcacion | Administrador",
+  title: "Editar embarcación | Administrador",
 };
+
+const uuidSchema = z.string().uuid();
 
 interface EditarEmbarcacionPageProps {
   params: Promise<{ id: string }>;
 }
 
 export default async function EditarEmbarcacionPage({ params }: EditarEmbarcacionPageProps) {
+  await requireRole("ADMIN", "SUPERADMIN");
+
   const { id } = await params;
+  const parsedId = uuidSchema.safeParse(id);
+  if (!parsedId.success) {
+    notFound();
+  }
+
   const repo = new PrismaVesselRepository(prisma);
-  const [vessel, vehicleTypes] = await Promise.all([repo.findById(id), repo.listVehicleTypes()]);
+  const [vessel, vehicleTypes] = await Promise.all([
+    repo.findById(parsedId.data),
+    repo.listVehicleTypes(),
+  ]);
 
   if (!vessel) {
     notFound();

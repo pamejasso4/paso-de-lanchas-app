@@ -19,20 +19,20 @@ function mapPrismaError(error: unknown): never {
     if (target.includes("code")) {
       throw new DomainError(
         "DUPLICATE_VESSEL_CODE",
-        "Ya existe una embarcacion registrada con ese codigo.",
+        "Ya existe una embarcación registrada con ese código.",
       );
     }
 
     if (target.includes("registration")) {
       throw new DomainError(
         "DUPLICATE_VESSEL_REGISTRATION",
-        "Ya existe una embarcacion registrada con esa matricula.",
+        "Ya existe una embarcación registrada con esa matrícula.",
       );
     }
 
     throw new DomainError(
       "DUPLICATE_VESSEL",
-      "El codigo o la matricula ya estan registrados en otra embarcacion.",
+      "El código o la matrícula ya están registrados en otra embarcación.",
     );
   }
 

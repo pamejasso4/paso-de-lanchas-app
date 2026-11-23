@@ -8,7 +8,7 @@ export function createListVessels(repo: VesselRepository) {
     if (!parsed.success) {
       throw new DomainError(
         "INVALID_VESSEL_FILTER",
-        parsed.error.issues[0]?.message ?? "Filtros de flota invalidos.",
+        parsed.error.issues[0]?.message ?? "Filtros de flota inválidos.",
       );
     }
 
