@@ -1,5 +1,9 @@
 import Link from "next/link";
 
+import { CHANGE_PASSWORD_PATH } from "@/domain/auth/roles";
+
+import { LogoutButton } from "./logout-button";
+
 interface ModuleItem {
   name: string;
   owner: string;
@@ -8,6 +12,7 @@ interface ModuleItem {
 
 interface ModulePlaceholderProps {
   role: string;
+  userName: string;
   modules: ModuleItem[];
 }
 
@@ -15,12 +20,21 @@ interface ModulePlaceholderProps {
  * Pantalla temporal de cada rol mientras se programan sus módulos.
  * Cada responsable la reemplaza por las pantallas reales del prototipo.
  */
-export function ModulePlaceholder({ role, modules }: ModulePlaceholderProps) {
+export function ModulePlaceholder({ role, userName, modules }: ModulePlaceholderProps) {
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 py-10">
-      <Link href="/" className="text-brand-accent font-bold">
-        ← Inicio
-      </Link>
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-ink-muted">Hola, {userName}</p>
+        <div className="flex items-center gap-4">
+          <Link
+            href={CHANGE_PASSWORD_PATH}
+            className="text-brand-accent text-sm font-bold underline"
+          >
+            Cambiar contraseña
+          </Link>
+          <LogoutButton />
+        </div>
+      </div>
       <h1 className="font-heading text-brand text-3xl font-bold">{role}</h1>
       <p className="text-ink-muted">En construcción. Módulos de esta sección y su responsable:</p>
       <ul className="flex flex-col gap-3">
